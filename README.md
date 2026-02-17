@@ -303,5 +303,5 @@ By using data-driven insights, the organization can reduce churn, improve patien
 ## Author
 
 Azeez Ashittu
-LinkedIn: https://www.linkedin.com/in/azeezashittu
-GitHub: https://github.com/azeezashittu
+- LinkedIn: https://www.linkedin.com/in/azeezashittu
+- GitHub: https://github.com/azeezashittu
