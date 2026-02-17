@@ -299,3 +299,9 @@ This analysis identified important factors related to patient churn, including l
 - Improving Patient Satisfaction: My queries show that unchurned patients have an average satisfaction score (3.09/5), and churned patients have a below average satisfaction score (2.92/5). The hospital should continue to monitor this score regularly and find ways to improve its satisfaction score, because soon these patients who haven't churned could churn if these ratings drop even a little.
 
 By using data-driven insights, the organization can reduce churn, improve patient experience, and protect long-term revenue.
+
+## Author
+
+Azeez Ashittu
+LinkedIn: https://www.linkedin.com/in/azeezashittu
+GitHub: https://github.com/azeezashittu
