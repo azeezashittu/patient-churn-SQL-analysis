@@ -22,7 +22,7 @@ Both tables are joined using patient_id
 
 ## Schema
 
-''' sql
+``` sql
 CREATE TABLE patients_table (
 patient_id INT PRIMARY KEY,
 age INT,
@@ -41,48 +41,49 @@ missed_appointments INT,
 churn VARCHAR(10),
 FOREIGN KEY (patient_id) REFERENCES patients_table(patient_id)
 );
-'''
+```
 
 ## Business Questions and Solutions
 
 ### 1. What is the overall churn rate?
 
-''' sql
+``` sql
 select round(count(case when churn = 'Left' then 1 end) * 1.0 / count(*) * 100,2) as churn_rate_prc
 from patient_activity_table;
-'''
+```
 
 ### 2. Which insurance type has the highest churn rate?
 
-''' sql
+``` sql
 select p.insurance_type, round(count(case when churn = 'Left' then 1 end) * 1.0 / count(*) * 100,2) as churn_rate_prc
 from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by p.insurance_type
 order by 2 desc;
-'''
+```
+
 ### 3. Do patients with chronic diseases churn more than those without?
 
-''' sql
+``` sql
 select p.chronic_disease, count(churn) as churned
 from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by p.chronic_disease
 order by 2 desc;
-'''
+```
 
 ### 4. What is the average satisfaction score of churned vs retained patients?
 
-''' sql
+``` sql
 select churn, round(avg(satisfaction_score),2) as avg_score
 from patient_activity_table
 group by churn
 order by 2 desc;
-'''
+```
 
 ### 5. Do patients with more missed appointments churn more?
 
-''' sql
+``` sql
 select case 
 when missed_appointments between 0 and 4 then 'Few Missed Appointments'
 when missed_appointments between 5 and 9 then 'Many Missed Appointments'
@@ -91,11 +92,11 @@ round(count(case when churn = 'Left' then 1 END) * 1.0 / count(*) * 100,2) as ch
 from patient_activity_table
 group by appointments_missed
 order by 2 desc;
-'''
+```
 
 ### 6. Are patients with fewer visits more likely to churn?
 
-''' sql
+``` sql
 select 
 case 
 when visits_last_year between 0 and 9 then 'Fewer vists'
@@ -105,35 +106,35 @@ round(count(case when churn = 'Left' then 1 END) * 1.0 / count(*) * 100,2) as ch
 from patient_activity_table
 group by visits
 order by 2 desc;
-'''
+```
 
 ### 7. What is the average tenure of churned patients?
 
-''' sql
+``` sql
 select round(avg(tenure_months),2) as avg_tenure
 from patient_activity_table
 where churn = 'Left';
-'''
+```
 
 ### 8. (Part 1) How much revenue was lost from patients who have churned?
 
-''' sql
+``` sql
 select sum(total_bill_amount) as revenue
 from patient_activity_table
 where churn = 'Left';
-'''
+```
 
 ### 8. (Part 2) vs. revenue from patients who haven't churned
 
-''' sql
+``` sql
 select sum(total_bill_amount) as revenue
 from patient_activity_table
 where churn = 'Stayed';
-'''
+```
 
 ### 9. (Part 1) Which demographic group brings the most revenue? (Age)
 
-''' sql
+``` sql
 select 
 case 
 when age between 18 and 32 then 'Young Adults'
@@ -159,11 +160,11 @@ from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by age_distribution
 order by 2 desc;
-'''
+```
 
 ### 9. (Part 2) Which demographic group brings the most revenue? (Gender)
 
-''' sql
+``` sql
 select gender, sum(total_bill_amount) as revenue
 from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
@@ -175,11 +176,11 @@ from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by gender
 order by 2 desc;
-'''
+```
 
 ### 9. (Part 3) Which demographic group brings the most revenue? (Insurance)
 
-''' sql
+``` sql
 select insurance_type, sum(total_bill_amount) as revenue
 from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
@@ -191,11 +192,11 @@ from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by insurance_type
 order by 2 desc;
-'''
+```
 
 ### 10. Do high-revenue patients churn less?
 
-''' sql
+``` sql
 select 
 case when total_bill_amount <= 25199.40 then 'Low Revenue'
 else 'High Revenue'
@@ -204,21 +205,21 @@ count(case when churn = 'Left' then 1 END) * 1.0 / count(*) * 100 as churn_rate_
 from patient_activity_table
 group by revenue_tier
 order by 2 desc;
-'''
+```
 
 ### 11. Which insurance group visits the hospital most frequently?
 
-''' sql
+``` sql
 select insurance_type, sum(visits_last_year) as visits
 from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by insurance_type
 order by 2 desc;
-'''
+```
 
 ### 12. (Part 1) What demographic group has the MOST missed appointments? (Age)
 
-''' sql
+``` sql
 select
 case 
 when age between 18 and 32 then 'Young Adults'
@@ -244,10 +245,10 @@ from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by age_distribution
 order by 2 desc;
-'''
+```
 
 ### 12. (Part 2) What demographic group has the MOST missed appointments? (Gender)
-''' sql
+``` sql
 select gender, sum(missed_appointments) as appointments_missed
 from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
@@ -259,11 +260,11 @@ from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by gender
 order by 2 desc;
-'''
+```
 
 ### 12. (Part 3) What demographic group has the MOST missed appointments? (Insurance)
 
-''' sql
+``` sql
 select insurance_type, sum(missed_appointments) as appointments_missed
 from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
@@ -275,11 +276,10 @@ from patients_table p JOIN patient_activity_table a
 on p.patient_id = a.patient_id
 group by insurance_type
 order by 2 desc;
-'''
-
+```
 ### 13. Is satisfaction higher for patients who visit more often?
 
-''' sql
+``` sql
 select 
 case 
 when visits_last_year between 0 and 9 then 'Fewer vists'
@@ -289,7 +289,7 @@ round(avg(satisfaction_score),2) as avg_satisfaction
 from patient_activity_table
 group by visits
 order by 2 desc;
-'''
+```
 
 ## Findings/Conclusions/Solutions
 
